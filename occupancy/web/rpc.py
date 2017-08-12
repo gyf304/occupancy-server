@@ -14,7 +14,7 @@ from .. import config, db, model
 
 _RPC_FUNCTIONS = dict()
 
-@app.route('/api/hxdt', methods=['POST'])
+@app.route('/rpc/hxdt', methods=['POST'])
 def hxdt_api():
     """"HTTP entrypoint for HXDT rpc calls"""
     hxdt_fmt = '>II8s8s'

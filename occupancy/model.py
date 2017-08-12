@@ -26,7 +26,7 @@ class Location(Base):
     id = Column(Integer, primary_key=True)
     sniffers = relationship('Sniffer', back_populates='location')
     occupancy_snapshots = relationship('OccupancySnapshot', back_populates='location')
-    name = Column(String(64), unique=True)
+    name = Column(String(64), unique=True, nullable=False)
     display_name = Column(String(128), nullable=False)
     description = Column(String(4096))
     capacity = Column(Integer)
