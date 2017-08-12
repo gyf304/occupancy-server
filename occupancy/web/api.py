@@ -24,7 +24,7 @@ def location_list():
 def location_info(location_str):
     """HTTP entrypoint for obtaining information of a location"""
     session = db.session_factory()
-    location = session.query(model.Location).filter(name=location_str).first()
+    location = session.query(model.Location).filter_by(name=location_str).first()
     if location is None:
         return jsonify({'error': 'Location not Found'}), 404
     reply = {
@@ -45,7 +45,7 @@ def occupancy(location_str):
         count = int(count_str)
     except ValueError:
         return jsonify({'error': 'Invalid Argument'}), 400
-    location = session.query(model.Location).filter(name=location_str).first()
+    location = session.query(model.Location).filter_by(name=location_str).first()
     if location is None:
         return jsonify({'error': 'Location not Found'}), 404
     occupancy_snapshots = \

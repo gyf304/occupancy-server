@@ -14,7 +14,7 @@ class Sniffer(Base):
     display_name = Column(String(128))
     description = Column(String(4096))
     model = Column(String(64))
-    mac = Column(String(12), unique=True)
+    mac = Column(String(12), unique=True, nullable=False)
     rssi_adjustment = Column(Float, nullable=False, default=0.0)
     updated = Column(DateTime)
 
