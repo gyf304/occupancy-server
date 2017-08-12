@@ -52,7 +52,7 @@ def occupancy(location_str):
         location.occupancy_snapshots.order_by(model.OccupancySnapshot.time)[-count:]
     occupancy_list = list(map(lambda x: {
         'estimate': x.estimate, 'error': x.error,
-        'time': x.time, 'degraded': x.degraded
+        'time': x.time.isoformat(), 'degraded': x.degraded
     }, occupancy_snapshots))
     session.close()
     return jsonify(occupancy_list), 200
