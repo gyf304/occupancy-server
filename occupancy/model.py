@@ -9,7 +9,7 @@ class Sniffer(Base):
     id = Column(Integer, primary_key=True)
     location_id = Column(Integer, ForeignKey('locations.id'))
     location = relationship('Location', back_populates='sniffers')
-    probe_requests = relationship('ProbeRequest')
+    probe_requests = relationship('ProbeRequest', lazy='dynamic')
     name = Column(String(64), unique=True)
     display_name = Column(String(128))
     model = Column(String(64))
@@ -25,7 +25,7 @@ class Location(Base):
     __tablename__ = 'locations'
     id = Column(Integer, primary_key=True)
     sniffers = relationship('Sniffer', back_populates='location')
-    occupancy_snapshots = relationship('OccupancySnapshot', back_populates='location')
+    occupancy_snapshots = relationship('OccupancySnapshot', back_populates='location', lazy='dynamic')
     name = Column(String(64), unique=True, nullable=False)
     display_name = Column(String(128), nullable=False)
     description = Column(Text)
