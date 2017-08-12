@@ -25,7 +25,7 @@ def run():
         # check if sniffers are online, if not, stop update of that
         # location or mark location as degraded.
         for sniffer in location.sniffers:
-            if sniffer.updated >= sniffer_time_threshold:
+            if sniffer.updated and sniffer.updated >= sniffer_time_threshold:
                 active_sniffer_count += 1
         if active_sniffer_count == 0:
             print('Update of location {} skipped: No active sniffer'.format(location.name),

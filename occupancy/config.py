@@ -31,3 +31,5 @@ except (KeyError, ValueError):
     PROBE_REQUEST_LIFE = 12 # in hours
     OCCUPANCY_UPDATE_INTERVAL = 60 # in seconds
     SNIFFER_MAX_INACTIVE_TIME = 300 # in seconds
+# misc
+
