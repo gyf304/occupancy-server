@@ -97,7 +97,6 @@ def _discover_1(args):
         if device_reg is None:
             pass
         else:
-            print('Device Manufacturer: {}'.format(device_org))
             probe_requests_raw.append({
                 'sniffer_mac': sniffer_mac_hex,
                 'device_mac': device_mac_hex,
