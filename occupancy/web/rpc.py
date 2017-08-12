@@ -96,11 +96,8 @@ def _discover_1(args):
             device_org = device_reg.org
         except netaddr.core.NotRegisteredError:
             pass
-        print('Device MAC: {}'.format(device_mac))
-        print('Device RSSI: {}'.format(device_rssi))
-        print('Device Channel: {}'.format(device_channel))
         if device_reg is None:
-            print('Device is not in OUI DB')
+            pass
         else:
             print('Device Manufacturer: {}'.format(device_org))
             probe_requests_raw.append({
