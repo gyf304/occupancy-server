@@ -77,8 +77,6 @@ def _discover_1(args):
     sniffer_mac_hex = binascii.hexlify(sniffer_mac_bytes).decode('ascii')
     sniffer_mac = netaddr.EUI(sniffer_mac_hex)
     current_time = datetime.datetime.utcnow()
-    print('Sniffer MAC: {}'.format(sniffer_mac))
-    print('Sniff Duration: {}'.format(sniffer_time))
     devices_data = args[8:]
     probe_requests_raw = []
     for i in range(len(devices_data) // 8):
