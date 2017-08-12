@@ -1,0 +1,13 @@
+{
+  "name": "CMU Occupancy",
+  "description": "CMU Occupancy.",
+  "image": "heroku/python",
+  "keywords": ["python"],
+  "environments": {
+    "test": {
+      "scripts": {
+        "test": "python test.py"
+      }
+    }
+  }
+}

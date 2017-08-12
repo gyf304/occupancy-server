@@ -1,0 +1,9 @@
+Flask==0.12.2
+netaddr==0.7.19
+pytz==2016.10
+requests==2.13.0
+SQLAlchemy==1.1.13
+Werkzeug==0.12.2
+xmltodict==0.11.0
+APScheduler==3.3.1
+PyMySQL==0.7.11
