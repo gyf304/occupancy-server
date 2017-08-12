@@ -1,5 +1,7 @@
 """Updates occupancy information"""
 import datetime
+import json
+import sys
 
 from . import estimator, scheduler
 from .. import config, db, model
@@ -13,10 +15,12 @@ def run():
     sniffer_time_threshold = current_time \
         - datetime.timedelta(seconds=config.SNIFFER_MAX_INACTIVE_TIME)
     for location in locations:
-        location_name = location.name
         active_sniffer_count = 0
-        estimator_config = config.ESTIMATOR_CONFIG.get(location_name)
-        if estimator_config is None:
+        try:
+            estimator_config = json.loads(str(location.estimator_config))
+        except (json.decoder.JSONDecodeError, TypeError):
+            print('Update of location {} skipped: No estimator config'.format(location.name),
+                  file=sys.stderr)
             continue
         # check if sniffers are online, if not, stop update of that
         # location or mark location as degraded.
@@ -24,6 +28,8 @@ def run():
             if sniffer.updated >= sniffer_time_threshold:
                 active_sniffer_count += 1
         if active_sniffer_count == 0:
+            print('Update of location {} skipped: No active sniffer'.format(location.name),
+                  file=sys.stderr)
             continue
         probe_requests = []
         for sniffer in location.sniffers:
@@ -36,6 +42,8 @@ def run():
                 })
         ret = estimator.estimate(probe_requests=probe_requests, **estimator_config)
         if ret is None:
+            print('Update of location {} skipped: Estimator returned None'.format(location.name),
+                  file=sys.stderr)
             continue
         occupancy_snapshot = model.OccupancySnapshot(
             location=location, time=datetime.datetime.utcnow(),

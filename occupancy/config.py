@@ -31,14 +31,3 @@ except (KeyError, ValueError):
     PROBE_REQUEST_LIFE = 12 # in hours
     OCCUPANCY_UPDATE_INTERVAL = 60 # in seconds
     SNIFFER_MAX_INACTIVE_TIME = 300 # in seconds
-# misc
-
-ESTIMATOR_CONFIG = {
-    'sorrells': {
-        'model': 'linear',
-        'a': 1.0,
-        'b': 0.0,
-        'rssi_threshold': -90.0,
-        'timespan': 120
-    }
-}

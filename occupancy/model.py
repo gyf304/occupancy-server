@@ -1,4 +1,4 @@
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Float, Boolean
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Text, Float, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import backref, relationship
 
@@ -12,10 +12,10 @@ class Sniffer(Base):
     probe_requests = relationship('ProbeRequest')
     name = Column(String(64), unique=True)
     display_name = Column(String(128))
-    description = Column(String(4096))
     model = Column(String(64))
     mac = Column(String(12), unique=True, nullable=False)
     rssi_adjustment = Column(Float, nullable=False, default=0.0)
+    description = Column(Text)
     updated = Column(DateTime)
 
     def __str__(self):
@@ -28,7 +28,8 @@ class Location(Base):
     occupancy_snapshots = relationship('OccupancySnapshot', back_populates='location')
     name = Column(String(64), unique=True, nullable=False)
     display_name = Column(String(128), nullable=False)
-    description = Column(String(4096))
+    description = Column(Text)
+    estimator_config = Column(Text)
     capacity = Column(Integer)
 
     def __str__(self):
