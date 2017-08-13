@@ -1,16 +1,17 @@
 """Configuration for server."""
 from os import environ
 import sys
+import binascii
 
 # connectivity
-
 try:
-    ENCRYPT_KEY = environ['ENCRYPT_KEY'].encode('ascii')
-    AUTH_KEY = environ['AUTH_KEY'].encode('ascii')
-    AUTH_IV = environ['AUTH_IV'].encode('ascii')
+    ENCRYPT_KEY = binascii.unhexlify(environ['ENCRYPT_KEY'].replace(' ', ''))
+    AUTH_KEY = binascii.unhexlify(environ['AUTH_KEY'].replace(' ', ''))
+    AUTH_IV = binascii.unhexlify(environ['AUTH_IV'].replace(' ', ''))
     assert len(ENCRYPT_KEY) == 16
     assert len(AUTH_KEY) == 16
-except (KeyError, AssertionError):
+    assert len(AUTH_IV) == 8
+except (KeyError, AssertionError, binascii.Error):
     print('Encryption config not loaded correctly, using default', file=sys.stderr)
     ENCRYPT_KEY = b'testtesttesttest'
     AUTH_KEY = b'testtesttesttest'
@@ -32,4 +33,3 @@ except (KeyError, ValueError):
     OCCUPANCY_UPDATE_INTERVAL = 60 # in seconds
     SNIFFER_MAX_INACTIVE_TIME = 300 # in seconds
 # misc
-
