@@ -5,7 +5,7 @@ import struct
 def encipher(k, v):
     (v0, v1) = v
     sum = 0
-    delta,mask = 0x9e3779b9,0xffffffff
+    delta, mask = 0x9e3779b9, 0xffffffff
     for round in range(32):
         v0 = (v0 + (((v1<<4 ^ v1>>5) + v1) ^ (sum + k[sum & 3]))) & mask
         sum = (sum + delta) & mask
@@ -18,7 +18,7 @@ def ctr(key, iv, data):
     if len(data) % 8 != 0:
         raise ArithmeticError
     blocks = len(data) // 8
-    k = struct.unpack(">4I",key)
+    k = struct.unpack(">4I", key)
     for i in range(blocks):
         (v0, v1) = encipher(k, (c0, c1))
         c1 = (c1 + 1) & 0xffffffff

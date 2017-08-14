@@ -37,6 +37,28 @@ def location_info(location_str):
     session.close()
     return jsonify(reply), 200
 
+@app.route('/api/v1/locations/<location_str>/occupancy_snapshots')
+def occupancy_snapshots(location_str):
+    """HTTP entrypoint for getting occupancy of a location"""
+    session = db.session_factory()
+    count_str = request.args.get('count', '5')
+    count = 0
+    try:
+        count = int(count_str)
+    except ValueError:
+        return jsonify({'error': 'Invalid Argument'}), 400
+    location = session.query(model.Location).filter_by(name=location_str).first()
+    if location is None:
+        return jsonify({'error': 'Location not Found'}), 404
+    occupancy_snapshots = \
+        location.occupancy_snapshots.order_by(model.OccupancySnapshot.time)[-count:]
+    occupancy_list = list(map(lambda x: {
+        'estimate': x.estimate, 'error': x.error,
+        'time': x.time.isoformat() + 'Z', 'degraded': x.degraded
+    }, occupancy_snapshots))
+    session.close()
+    return jsonify(occupancy_list), 200
+
 @app.route('/api/v1/locations/<location_str>/occupancy')
 def occupancy(location_str):
     """HTTP entrypoint for getting occupancy of a location"""
@@ -54,7 +76,8 @@ def occupancy(location_str):
         location.occupancy_snapshots.order_by(model.OccupancySnapshot.time)[-count:]
     occupancy_list = list(map(lambda x: {
         'estimate': x.estimate, 'error': x.error,
-        'time': x.time.isoformat(), 'degraded': x.degraded
+        'time': x.time.isoformat() + 'Z', 'degraded': x.degraded
     }, occupancy_snapshots))
+    occupancy = occupancy_list[-1] if occupancy_list else None
     session.close()
-    return jsonify(occupancy_list), 200
+    return jsonify(occupancy), 200
