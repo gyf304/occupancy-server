@@ -32,7 +32,7 @@ def location_info(location_str):
         'name': location.name,
         'displayName': location.display_name,
         'description': location.description,
-        'capacity': x.capacity
+        'capacity': location.capacity
     }
     session.close()
     return jsonify(reply), 200
