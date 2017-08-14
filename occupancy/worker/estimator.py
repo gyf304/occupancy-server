@@ -13,6 +13,7 @@ def linear_estimator(probe_requests, time, a=1.0, b=0.0, rssi_threshold=-90.0, t
     # first deduplicate
     time_threshold = time - datetime.timedelta(seconds=timespan)
     req_dict = {}
+    valid_probe_request_count = 0
     for req in probe_requests:
         rssi = req.get('rssi')
         rssi_adj = req.get('rssi_adjustment')
@@ -25,6 +26,8 @@ def linear_estimator(probe_requests, time, a=1.0, b=0.0, rssi_threshold=-90.0, t
             stored_req = []
             req_dict[req['device_mac']] = stored_req
         stored_req.append(adjusted_rssi)
+        valid_probe_request_count += 1
+    relative_error = valid_probe_request_count**0.5 / valid_probe_request_count
     req_list = req_dict.values()
     # take average on rssi
     rssi_levels = list(map(lambda x: float(sum(x)) / len(x), req_list))
@@ -32,8 +35,8 @@ def linear_estimator(probe_requests, time, a=1.0, b=0.0, rssi_threshold=-90.0, t
     filtered_rssi_levels = list(filter(lambda x: x >= rssi_threshold, rssi_levels))
     # now get devices
     device_count = float(len(filtered_rssi_levels))
-    o_estimate = device_count * a + b
-    error = o_estimate**0.4 # made up some random number here
+    o_estimate = max(device_count * a + b, 0)
+    error = o_estimate*relative_error
     return {'estimate': o_estimate, 'error': error}
 
 ESTIMATORS['linear'] = linear_estimator

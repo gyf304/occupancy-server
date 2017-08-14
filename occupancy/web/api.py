@@ -14,7 +14,7 @@ def location_list():
     session = db.session_factory()
     locations = list(map(lambda x: {
         'name': x.name,
-        'displayNmae': x.display_name,
+        'displayName': x.display_name,
         'description': x.description,
         'capacity': x.capacity
     }, session.query(model.Location).all()))
