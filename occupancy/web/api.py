@@ -15,7 +15,8 @@ def location_list():
     locations = list(map(lambda x: {
         'name': x.name,
         'displayNmae': x.display_name,
-        'description': x.description
+        'description': x.description,
+        'capacity': x.capacity
     }, session.query(model.Location).all()))
     session.close()
     return jsonify(locations), 200
@@ -30,7 +31,8 @@ def location_info(location_str):
     reply = {
         'name': location.name,
         'displayName': location.display_name,
-        'description': location.description
+        'description': location.description,
+        'capacity': x.capacity
     }
     session.close()
     return jsonify(reply), 200
