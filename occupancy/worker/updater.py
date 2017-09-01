@@ -28,7 +28,7 @@ def update():
             if sniffer.updated and sniffer.updated >= sniffer_time_threshold:
                 active_sniffer_count += 1
             else:
-                print('[WARNING] Updater: {} missing'.format(repr(location)),
+                print('[WARNING] Updater: {} missing'.format(repr(sniffer)),
                       file=sys.stderr)
         if active_sniffer_count == 0:
             print('[ERROR] Updater: Update of {} skipped: No active sniffer'.format(repr(location)),
