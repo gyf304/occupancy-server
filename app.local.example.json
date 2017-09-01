@@ -15,7 +15,7 @@
     "AUTH_KEY": "74 65 73 74 74 65 73 74 74 65 73 74 74 65 73 74",
     "AUTH_IV": "00 00 00 00 00 00 00 00",
     "DB_URI": "sqlite:///test.local.db",
-    "PROBE_REQUEST_LIFE": "24",
+    "PROBE_REQUEST_LIFE": "43200",
     "OCCUPANCY_UPDATE_INTERVAL": "30",
     "SNIFFER_MAX_INACTIVE_TIME": "120"
   }

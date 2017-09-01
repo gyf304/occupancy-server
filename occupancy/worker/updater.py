@@ -7,7 +7,7 @@ from . import estimator, scheduler
 from .. import config, db, model
 
 @scheduler.scheduled_job('interval', seconds=config.OCCUPANCY_UPDATE_INTERVAL)
-def run():
+def update():
     """runs the update"""
     session = db.session_factory()
     locations = session.query(model.Location).all()
@@ -51,12 +51,4 @@ def run():
             estimate=ret['estimate'], error=ret['error'])
         session.add(occupancy_snapshot)
     session.commit()
-    clean = False
-    if clean:
-        probe_requests = session.query(model.ProbeRequest).all()
-        time_threshold = current_time - datetime.timedelta(hours=config.PROBE_REQUEST_LIFE)
-        for probe_request in probe_requests:
-            if probe_request.time < time_threshold:
-                session.delete(probe_request)
-        session.commit()
     session.close()

@@ -29,7 +29,6 @@ try:
     SNIFFER_MAX_INACTIVE_TIME = int(environ['SNIFFER_MAX_INACTIVE_TIME'])
 except (KeyError, ValueError):
     print('Misc config not loaded correctly, using default', file=sys.stderr)
-    PROBE_REQUEST_LIFE = 12 # in hours
+    PROBE_REQUEST_LIFE = 43200 # in seconds
     OCCUPANCY_UPDATE_INTERVAL = 60 # in seconds
     SNIFFER_MAX_INACTIVE_TIME = 300 # in seconds
-# misc
