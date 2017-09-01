@@ -19,7 +19,7 @@ def update():
         try:
             estimator_config = json.loads(str(location.estimator_config))
         except (json.decoder.JSONDecodeError, TypeError):
-            print('Update of location {} skipped: No estimator config'.format(location.name),
+            print('[ERROR] Updater: Update of {} skipped: Estimator config error'.format(repr(location)),
                   file=sys.stderr)
             continue
         # check if sniffers are online, if not, stop update of that
@@ -27,8 +27,11 @@ def update():
         for sniffer in location.sniffers:
             if sniffer.updated and sniffer.updated >= sniffer_time_threshold:
                 active_sniffer_count += 1
+            else:
+                print('[WARNING] Updater: {} missing'.format(repr(location)),
+                      file=sys.stderr)
         if active_sniffer_count == 0:
-            print('Update of location {} skipped: No active sniffer'.format(location.name),
+            print('[ERROR] Updater: Update of {} skipped: No active sniffer'.format(repr(location)),
                   file=sys.stderr)
             continue
         probe_requests = []
@@ -42,7 +45,7 @@ def update():
                 })
         ret = estimator.estimate(probe_requests=probe_requests, **estimator_config)
         if ret is None:
-            print('Update of location {} skipped: Estimator returned None'.format(location.name),
+            print('[ERROR] Updater: Update of {} skipped: Estimator returned None'.format(repr(location)),
                   file=sys.stderr)
             continue
         occupancy_snapshot = model.OccupancySnapshot(

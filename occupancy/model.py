@@ -18,8 +18,8 @@ class Sniffer(Base):
     description = Column(Text)
     updated = Column(DateTime)
 
-    def __str__(self):
-        return str(self.name)
+    def __repr__(self):
+        return '<Sniffer {} with MAC {}>'.format(str(self.name), str(self.mac))
 
 class Location(Base):
     __tablename__ = 'locations'

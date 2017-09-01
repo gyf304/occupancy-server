@@ -8,7 +8,7 @@ from .. import config, db, model
 
 @scheduler.scheduled_job('interval', seconds=config.MAINTENANCE_INTERVAL)
 def clean():
-    print('Cleaning Probe Requests')
+    print('[INFO] Cleaning Probe Requests')
     current_time = datetime.datetime.utcnow()
     session = db.session_factory()
     probe_requests = session.query(model.ProbeRequest).all()

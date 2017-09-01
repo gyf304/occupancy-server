@@ -12,7 +12,7 @@ try:
     assert len(AUTH_KEY) == 16
     assert len(AUTH_IV) == 8
 except (KeyError, AssertionError, binascii.Error):
-    print('Encryption config not loaded correctly, using default', file=sys.stderr)
+    print('[WARNING] Encryption config not loaded correctly, using default', file=sys.stderr)
     ENCRYPT_KEY = b'testtesttesttest'
     AUTH_KEY = b'testtesttesttest'
     AUTH_IV = b'\0\0\0\0\0\0\0\0'
@@ -20,7 +20,7 @@ except (KeyError, AssertionError, binascii.Error):
 try:
     DB_URI = environ['DB_URI']
 except KeyError:
-    print('Database config not loaded correctly, using default', file=sys.stderr)
+    print('[WARNING] Database config not loaded correctly, using default', file=sys.stderr)
     DB_URI = 'sqlite:///test.db'
 
 try:
@@ -30,7 +30,7 @@ try:
     SNIFFER_MAX_INACTIVE_TIME = int(environ['SNIFFER_MAX_INACTIVE_TIME'])
 
 except (KeyError, ValueError):
-    print('Misc config not loaded correctly, using default', file=sys.stderr)
+    print('[WARNING] Misc config not loaded correctly, using default', file=sys.stderr)
     PROBE_REQUEST_LIFE = 43200 # in seconds
     OCCUPANCY_UPDATE_INTERVAL = 60 # in seconds
     MAINTENANCE_INTERVAL = 43200
