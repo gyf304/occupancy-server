@@ -26,9 +26,12 @@ except KeyError:
 try:
     PROBE_REQUEST_LIFE = int(environ['PROBE_REQUEST_LIFE'])
     OCCUPANCY_UPDATE_INTERVAL = int(environ['OCCUPANCY_UPDATE_INTERVAL'])
+    MAINTENANCE_INTERVAL = int(environ['MAINTENANCE_INTERVAL'])
     SNIFFER_MAX_INACTIVE_TIME = int(environ['SNIFFER_MAX_INACTIVE_TIME'])
+
 except (KeyError, ValueError):
     print('Misc config not loaded correctly, using default', file=sys.stderr)
     PROBE_REQUEST_LIFE = 43200 # in seconds
     OCCUPANCY_UPDATE_INTERVAL = 60 # in seconds
+    MAINTENANCE_INTERVAL = 43200
     SNIFFER_MAX_INACTIVE_TIME = 300 # in seconds
