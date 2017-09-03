@@ -3,9 +3,10 @@ import datetime
 
 ESTIMATORS = {}
 
-def estimate(model=None, probe_requests=None, time=datetime.datetime.utcnow(), **kwargs):
+def estimate(model=None, probe_requests=None, **kwargs):
     """Estimate using a model, probe_requests an iterable of dicts"""\
     """Dict contains: rssi, mac_addr, etc"""
+    time=datetime.datetime.utcnow()
     return ESTIMATORS[model](probe_requests, time=time, **kwargs)
 
 def linear_estimator(probe_requests, time, a=1.0, b=0.0, rssi_threshold=-90.0, timespan=60, lookback=30):
