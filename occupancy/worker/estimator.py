@@ -8,10 +8,11 @@ def estimate(model=None, probe_requests=None, time=datetime.datetime.utcnow(), *
     """Dict contains: rssi, mac_addr, etc"""
     return ESTIMATORS[model](probe_requests, time=time, **kwargs)
 
-def linear_estimator(probe_requests, time, a=1.0, b=0.0, rssi_threshold=-90.0, timespan=60):
+def linear_estimator(probe_requests, time, a=1.0, b=0.0, rssi_threshold=-90.0, timespan=60, lookback=30):
     """simple linear estimator"""
     # first deduplicate
-    time_threshold = time - datetime.timedelta(seconds=timespan)
+    time_threshold_low = time - datetime.timedelta(seconds=timespan) - datetime.timedelta(seconds=lookback)
+    time_threshold_high = time - datetime.timedelta(seconds=lookback)
     req_dict = {}
     valid_probe_request_count = 0
     for req in probe_requests:
@@ -19,7 +20,7 @@ def linear_estimator(probe_requests, time, a=1.0, b=0.0, rssi_threshold=-90.0, t
         rssi_adj = req.get('rssi_adjustment')
         adjusted_rssi = rssi + rssi_adj
         req_time = req.get('time')
-        if req_time < time_threshold:
+        if req_time < time_threshold_low or req_time > time_threshold_high:
             continue
         stored_req = req_dict.get(req['device_mac'])
         if stored_req is None:
