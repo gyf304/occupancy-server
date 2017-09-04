@@ -38,7 +38,7 @@ def linear_estimator(probe_requests, time, a=1.0, b=0.0, rssi_threshold=-90.0, t
     # now get devices
     device_count = float(len(filtered_rssi_levels))
     o_estimate = max(device_count * a + b, 0)
-    error = o_estimate*relative_error
+    error = device_count * a * relative_error
     return {'estimate': o_estimate, 'error': error}
 
 ESTIMATORS['linear'] = linear_estimator
