@@ -21,6 +21,8 @@ def linear_estimator(probe_requests, time, a=1.0, b=0.0, rssi_threshold=-90.0, t
         rssi_adj = req.get('rssi_adjustment')
         adjusted_rssi = rssi + rssi_adj
         req_time = req.get('time')
+        if adjusted_rssi < rssi_threshold:
+            continue
         if req_time < time_threshold_low or req_time > time_threshold_high:
             continue
         stored_req = req_dict.get(req['device_mac'])
@@ -33,10 +35,8 @@ def linear_estimator(probe_requests, time, a=1.0, b=0.0, rssi_threshold=-90.0, t
     req_list = req_dict.values()
     # take average on rssi
     rssi_levels = list(map(lambda x: float(sum(x)) / len(x), req_list))
-    # drop devices less than threshold
-    filtered_rssi_levels = list(filter(lambda x: x >= rssi_threshold, rssi_levels))
     # now get devices
-    device_count = float(len(filtered_rssi_levels))
+    device_count = float(len(rssi_levels))
     o_estimate = max(device_count * a + b, 0)
     error = device_count * a * relative_error
     return {'estimate': o_estimate, 'error': error}
